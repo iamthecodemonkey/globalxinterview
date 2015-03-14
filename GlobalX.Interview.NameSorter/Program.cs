@@ -1,4 +1,5 @@
-﻿using GlobalX.Interview.NameSorter.Comparers;
+﻿using System.Collections.Generic;
+using GlobalX.Interview.NameSorter.Comparers;
 using GlobalX.Interview.NameSorter.Interfaces;
 using System;
 using System.Linq;
@@ -13,17 +14,27 @@ namespace GlobalX.Interview.NameSorter
         /// Main entry point for execution
         /// </summary>
         /// <param name="args">The arguments.</param>
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+            
+            var program = new Program();
+            program.Execute(args);
+        }
 
+        /// <summary>
+        /// Executes the specified arguments.
+        /// </summary>
+        /// <param name="args">The arguments.</param>
+        internal void Execute(IEnumerable<string> args)
+        {
             var inputFileName = args.FirstOrDefault();
             INameCollectionReader<string> inputHandler = new FileNameCollectionHandler(inputFileName);
-            if (!inputHandler.IsValid) Fail(Resources.InvalidInputFile);
+            if (!inputHandler.IsValid) throw new ApplicationException(Resources.InvalidInputFile);
 
             var outputFileName = inputFileName + OutputFileNameSuffix;
             INameCollectionWriter<string> outputHandler = new FileNameCollectionHandler(outputFileName);
-            if (!outputHandler.IsValid) Fail(Resources.InvalidOutputFile);
+            if (!outputHandler.IsValid) throw new ApplicationException(Resources.InvalidOutputFile);
 
             var invalidComparisonTokens = string.Join(string.Empty, Enumerable.Range(char.MinValue, char.MaxValue - char.MinValue).Where(i => char.IsPunctuation((char)i)).Select(i => (char)i));
             var comparer = new NameComparer(invalidComparisonTokens);
@@ -40,7 +51,8 @@ namespace GlobalX.Interview.NameSorter
         /// <param name="e">The <see cref="UnhandledExceptionEventArgs"/> instance containing the event data.</param>
         static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            Fail(e.ExceptionObject != null ? e.ExceptionObject.ToString() : null);
+            var exception = e.ExceptionObject as Exception;
+            Fail(exception != null ? exception.Message : null);
         }
 
         /// <summary>

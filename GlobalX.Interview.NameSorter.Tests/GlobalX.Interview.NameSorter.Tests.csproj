@@ -50,6 +50,7 @@
     <Compile Include="NameComparerTests.cs" />
     <Compile Include="NameListSorterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProgramTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
