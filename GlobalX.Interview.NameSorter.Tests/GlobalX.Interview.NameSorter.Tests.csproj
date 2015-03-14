@@ -47,7 +47,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileNameCollectionHandlerTests.cs" />
-    <Compile Include="SurnameComparerTests.cs" />
+    <Compile Include="NameComparerTests.cs" />
+    <Compile Include="NameListSorterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
