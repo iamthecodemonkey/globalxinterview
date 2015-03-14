@@ -86,7 +86,7 @@ namespace GlobalX.Interview.NameSorter
             {
                 result = !string.IsNullOrEmpty(_FileName)
                 && !File.Exists(_FileName)
-                && Directory.Exists(Path.GetDirectoryName(_FileName));
+                && Directory.Exists(new FileInfo(_FileName).DirectoryName);
             }
             catch (Exception)
             {
