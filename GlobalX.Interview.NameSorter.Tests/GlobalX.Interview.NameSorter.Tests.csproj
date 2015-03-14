@@ -54,6 +54,12 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GlobalX.Interview.NameSorter\GlobalX.Interview.NameSorter.csproj">
+      <Project>{5e3c8e90-ab1d-40d3-bed6-be1c84174bec}</Project>
+      <Name>GlobalX.Interview.NameSorter</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

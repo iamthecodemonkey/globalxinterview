@@ -27,7 +27,7 @@ namespace GlobalX.Interview.NameSorter
         /// <value>
         /// The input source.
         /// </value>
-        public INameCollectionReader<T> InputSource { get; set; }
+        public INameCollectionReader<T> InputSource { get; private set; }
 
         /// <summary>
         /// Gets or sets the output source.
@@ -35,7 +35,7 @@ namespace GlobalX.Interview.NameSorter
         /// <value>
         /// The output source.
         /// </value>
-        public INameCollectionWriter<T> OutputSource { get; set; }
+        public INameCollectionWriter<T> OutputSource { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NameListSorter{T}" /> class.
@@ -64,7 +64,7 @@ namespace GlobalX.Interview.NameSorter
             //potential for excessive memory usage and/or file/network io
             //depending on input provider
             var source = InputSource.ToList();
-            
+
             source.Sort(Comparer);
 
             foreach (var item in source)
