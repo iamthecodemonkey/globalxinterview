@@ -1,8 +1,6 @@
-﻿using System;
-using GlobalX.Interview.NameSorter.Interfaces;
-using Moq;
-using NUnit.Framework;
-using System.Collections.Generic;
+﻿using NUnit.Framework;
+using System;
+using System.IO;
 
 namespace GlobalX.Interview.NameSorter.Tests
 {
@@ -17,14 +15,16 @@ namespace GlobalX.Interview.NameSorter.Tests
             _Subject = new Program();
         }
 
-        [TestCase()]
+        [TestCase("input.txt")]
         public void ValidFileIsProcessed(string inputFile)
         {
-            Assert.Inconclusive();
+            //cleanup test output
+            File.Delete(inputFile + Program.OutputFileNameSuffix);
+            var test = new TestDelegate(() => _Subject.Execute(new[] { inputFile }));
+            Assert.DoesNotThrow(test);
         }
 
         #region Exceptions
-
 
         [TestCase(@"c:\somethingthatdoesntexist.txt")]
         public void ThrowsIfFileIsInvalid(string inputFile)

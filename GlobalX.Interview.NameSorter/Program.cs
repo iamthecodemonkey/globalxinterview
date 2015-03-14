@@ -8,7 +8,7 @@ namespace GlobalX.Interview.NameSorter
 {
     class Program
     {
-        private const string OutputFileNameSuffix = "-sorted.txt";
+        internal const string OutputFileNameSuffix = "-sorted.txt";
 
         /// <summary>
         /// Main entry point for execution
