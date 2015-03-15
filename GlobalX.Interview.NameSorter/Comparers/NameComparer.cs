@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
+using System.Linq;
 
 namespace GlobalX.Interview.NameSorter.Comparers
 {
@@ -9,7 +9,7 @@ namespace GlobalX.Interview.NameSorter.Comparers
     /// </summary>
     public class NameComparer : IComparer<string>
     {
-        private readonly Regex _InvalidComparisonTokensRegex;
+        private readonly string _TokensToIgnoreOnComparison;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NameComparer" /> class.
@@ -17,18 +17,7 @@ namespace GlobalX.Interview.NameSorter.Comparers
         /// <param name="tokens">The tokens.</param>
         public NameComparer(string tokens = null)
         {
-            _InvalidComparisonTokensRegex = new Regex(GetRegexString(tokens), RegexOptions.CultureInvariant);
-        }
-
-        /// <summary>
-        /// Gets the regex string free of any characters which can be misinterpreted.
-        /// </summary>
-        /// <param name="tokens">The tokens.</param>
-        /// <returns>The regex string to use for replacing noise in the input upon comparison</returns>
-        private string GetRegexString(string tokens)
-        {
-            tokens = Regex.Escape(tokens ?? string.Empty).Replace("-", @"\-");
-            return string.IsNullOrEmpty(tokens.Trim()) ? string.Empty : string.Format("[{0}]", tokens);
+            _TokensToIgnoreOnComparison = tokens ?? string.Empty;
         }
 
         /// <summary>
@@ -52,7 +41,7 @@ namespace GlobalX.Interview.NameSorter.Comparers
         private string GetName(string name)
         {
             return string.IsNullOrEmpty(name) ? name
-                : _InvalidComparisonTokensRegex.Replace(name, string.Empty);
+                : string.Join(string.Empty, name.ToCharArray().Except(_TokensToIgnoreOnComparison));
         }
     }
 }

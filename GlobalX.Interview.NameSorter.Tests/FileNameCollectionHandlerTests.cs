@@ -1,46 +1,61 @@
-﻿using NUnit.Framework;
+﻿using System;
+using System.IO;
+using GlobalX.Interview.NameSorter.Interfaces;
+using NUnit.Framework;
 
 namespace GlobalX.Interview.NameSorter.Tests
 {
     [TestFixture]
     public class FileNameCollectionHandlerTests
     {
-        [TestCase("")]
-        public void ValidFileIsAcceptableForInput(string input)
+        [TestFixtureSetUp]
+        public void Setup()
         {
-            Assert.Inconclusive();
+            //nothing
         }
 
-        [TestCase("")]
+        [TestCase("input.txt")]
+        public void ValidFileIsAcceptableForInput(string input)
+        {
+            INameCollectionReader<string> subject = new FileNameCollectionHandler(input);
+            Assert.IsTrue(subject.IsValid);
+        }
+
+        [TestCase("outputFileThatDoesntExist.txt")]
         public void ValidFileIsAceptableForOuput(string input)
         {
-            Assert.Inconclusive();
+            INameCollectionWriter<string> subject = new FileNameCollectionHandler(input);
+            Assert.IsTrue(subject.IsValid);
         }
 
         #region Exceptions
-        
-        [Test]
-        public void ThrowsOnNonExistentInputFile()
+
+        [TestCase("inputFileThatDoesntExist.txt")]
+        public void InvalidOnNonExistentInputFile(string input)
         {
-            Assert.Inconclusive();
+            INameCollectionReader<string> subject = new FileNameCollectionHandler(input);
+            Assert.IsFalse(subject.IsValid);
         }
 
-        [Test]
-        public void ThrowsOnOutputFileAlreadyExisting()
+        [TestCase("input.txt")]
+        public void InvalidOnOutputFileAlreadyExisting(string input)
         {
-            Assert.Inconclusive();
+            INameCollectionWriter<string> subject = new FileNameCollectionHandler(input);
+            Assert.IsFalse(subject.IsValid);
         }
 
-        [Test]
-        public void ThrowsOnImpossibleInputFile()
+        [TestCase("sdfjnsnlsng:\\input.txt")]
+        public void DoesNotThrowOnImpossibleInputFile(string input)
         {
-            Assert.Inconclusive();
+            INameCollectionReader<string> subject = new FileNameCollectionHandler(input);
+            Assert.DoesNotThrow(() => { if (subject.IsValid) Assert.Fail("Should not have been a valid handler"); } );
         }
 
-        [Test]
-        public void ThrowsOnImpossibleOutputFile()
+        [TestCase("ZZ:\\input.txt")]
+        public void ThrowsOnImpossibleOutputFile(string input)
         {
-            Assert.Inconclusive();
+            INameCollectionWriter<string> subject = new FileNameCollectionHandler(input);
+            Assert.DoesNotThrow(() => { if (subject.IsValid) Assert.Fail("Should not have been a valid handler"); });
         }
 
         #endregion
