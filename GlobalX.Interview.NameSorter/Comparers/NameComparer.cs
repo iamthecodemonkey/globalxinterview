@@ -17,7 +17,18 @@ namespace GlobalX.Interview.NameSorter.Comparers
         /// <param name="tokens">The tokens.</param>
         public NameComparer(string tokens = null)
         {
-             _InvalidComparisonTokensRegex = new Regex(Regex.Escape(tokens ?? string.Empty), RegexOptions.CultureInvariant);
+            _InvalidComparisonTokensRegex = new Regex(GetRegexString(tokens), RegexOptions.CultureInvariant);
+        }
+
+        /// <summary>
+        /// Gets the regex string free of any characters which can be misinterpreted.
+        /// </summary>
+        /// <param name="tokens">The tokens.</param>
+        /// <returns>The regex string to use for replacing noise in the input upon comparison</returns>
+        private string GetRegexString(string tokens)
+        {
+            tokens = Regex.Escape(tokens ?? string.Empty).Replace("-", @"\-");
+            return string.IsNullOrEmpty(tokens.Trim()) ? string.Empty : string.Format("[{0}]", tokens);
         }
 
         /// <summary>
